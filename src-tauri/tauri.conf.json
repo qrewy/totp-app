@@ -1,0 +1,50 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "totp-app",
+  "version": "0.1.0",
+  "identifier": "com.ttop.qrewy",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+        {
+        "label": "main",
+        "title": "totp-app",
+        "width": 550,
+        "height": 850,
+        "resizable": false,
+        "minWidth": 550,
+        "minHeight": 850,
+        "maxWidth": 550,
+        "maxHeight": 850,
+        "decorations": false,
+        "dragDropEnabled": true
+
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "**"
+        ]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

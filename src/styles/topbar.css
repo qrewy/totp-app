@@ -1,0 +1,88 @@
+.topbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+.topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  font-family: "Montserrat", "TT Interfaces", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.topbar-title-button {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: inherit;
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+  -webkit-app-region: no-drag;
+  font-family: "Montserrat", "TT Interfaces", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.topbar-title-button:hover {
+  background: #413f3d;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.topbar-button {
+  width: 38px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 240ms ease, transform 240ms ease;
+  -webkit-app-region: no-drag;
+}
+
+.topbar-button:active {
+  transform: translateY(0);
+}
+
+.topbar-icon {
+  width: 12px;
+  height: 12px;
+  background-color: #757373;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  transition: background-color 240ms ease;
+}
+
+.topbar-icon.minimize {
+  mask-image: url("../assets/svg/minimize.svg");
+  -webkit-mask-image: url("../assets/svg/minimize.svg");
+}
+
+.topbar-icon.close {
+  mask-image: url("../assets/svg/close.svg");
+  -webkit-mask-image: url("../assets/svg/close.svg");
+}
+
+.topbar-button:not(.close):hover .topbar-icon {
+  background-color: #656160;
+}
+
+.topbar-button.close:hover .topbar-icon {
+  background-color: #c0392b;
+}

@@ -1,0 +1,38 @@
+.add-button {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  background: #1f1d1b;
+  color: #e6e6e6;
+  border: none;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 120ms ease;
+  z-index: 9;
+}
+
+.add-button:hover {
+  background: #33312f;
+}
+
+.add-icon {
+  width: 16px;
+  height: 16px;
+  background-color: #e6e0db;
+  mask-image: url("../assets/svg/plus.svg");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-image: url("../assets/svg/plus.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}

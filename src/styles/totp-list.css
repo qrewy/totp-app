@@ -1,0 +1,25 @@
+.content {
+  padding: 16px 14px 24px;
+}
+
+.section-title {
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  color: #9a9595;
+  margin-bottom: 10px;
+}
+
+.totp-list {
+  display: grid;
+  gap: 10px;
+}
+
+.empty-state {
+  min-height: 45vh;
+  display: grid;
+  place-items: center;
+  color: #9a9595;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}

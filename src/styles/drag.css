@@ -1,0 +1,40 @@
+body.is-dragging {
+  user-select: none;
+  cursor: grabbing;
+}
+
+.drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: #1f1d1b;
+  border: 1px solid #2b2826;
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 160px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  opacity: 0.92;
+  transition: transform 220ms ease, opacity 220ms ease;
+  will-change: transform;
+}
+
+.drag-ghost.is-dropping {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.drag-ghost-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.drag-ghost-code {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: Consolas, "Courier New", monospace;
+  color: #e6e0db;
+}
