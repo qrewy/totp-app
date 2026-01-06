@@ -9,15 +9,6 @@
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
-  "tauri": {
-    "updater": {
-      "active": true,
-      "endpoints": [
-        "https://github.com/qrewy/totp-app/releases/latest/download/latest.json"
-      ],
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEREOUJBNzk4MEJGNDUyQzIKUldUQ1V2UUxtS2ViM2Q2bDVlajJEdDlUQUx0NkFMQkNiMCtGVmtmejhUZEJkMDBqeE1UNGE5RE4K"
-    }
-  },
   "app": {
     "windows": [
         {
@@ -44,6 +35,18 @@
         ]
       }
     }
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/qrewy/totp-app/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEREOUJBNzk4MEJGNDUyQzIKUldUQ1V2UUxtS2ViM2Q2bDVlajJEdDlUQUx0NkFMQkNiMCtGVmtmejhUZEJkMDBqeE1UNGE5RE4K"
+    },
+     "windows": {
+        "installMode": "passive"
+      }
   },
   "bundle": {
     "active": true,
