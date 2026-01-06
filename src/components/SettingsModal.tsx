@@ -165,7 +165,7 @@ export function SettingsModal({
                 type="button"
                 onClick={onSetPin}
               >
-                {t("settings.export")}
+                {t("settings.change_pin")}
               </button>
               <button
                 className="modal-submit is-secondary is-danger-outline modal-pin-button"
