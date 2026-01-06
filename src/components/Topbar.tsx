@@ -3,11 +3,21 @@ import "../styles/topbar.css"
 
 type Props = {
   onSettings: () => void
+  onLock: () => void
+  showLock: boolean
+  settingsDisabled: boolean
   onMinimize: () => void
   onClose: () => void
 }
 
-export function Topbar({ onSettings, onMinimize, onClose }: Props) {
+export function Topbar({
+  onSettings,
+  onLock,
+  showLock,
+  settingsDisabled,
+  onMinimize,
+  onClose,
+}: Props) {
   const { t } = useI18n()
 
   return (
@@ -17,10 +27,21 @@ export function Topbar({ onSettings, onMinimize, onClose }: Props) {
         type="button"
         aria-label={t("actions.settings")}
         onClick={onSettings}
+        disabled={settingsDisabled}
       >
         {t("app.title")}
       </button>
       <div className="topbar-actions">
+        {showLock && (
+          <button
+            className="topbar-button"
+            type="button"
+            aria-label={t("actions.lock")}
+            onClick={onLock}
+          >
+            <span className="topbar-icon lock" aria-hidden="true" />
+          </button>
+        )}
         <button
           className="topbar-button"
           type="button"

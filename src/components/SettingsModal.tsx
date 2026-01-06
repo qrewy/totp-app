@@ -5,9 +5,29 @@ type Props = {
   isVisible: boolean
   onClose: () => void
   periodSeconds: number
+  onExportAll: () => void
+  hasPin: boolean
+  onSetPin: () => void
+  onRemovePin: () => void
+  blurCodes: boolean
+  onToggleBlur: () => void
+  closeToTray: boolean
+  onToggleCloseToTray: () => void
 }
 
-export function SettingsModal({ isOpen, isVisible, onClose }: Props) {
+export function SettingsModal({
+  isOpen,
+  isVisible,
+  onClose,
+  onExportAll,
+  hasPin,
+  onSetPin,
+  onRemovePin,
+  blurCodes,
+  onToggleBlur,
+  closeToTray,
+  onToggleCloseToTray,
+}: Props) {
   const { locale, setLocale, t } = useI18n()
 
   if (!isOpen) {
@@ -54,7 +74,49 @@ export function SettingsModal({ isOpen, isVisible, onClose }: Props) {
               </button>
             </div>
           </div>
+          <div className="modal-row">
+            <div className="modal-label">{t("settings.export")}</div>
+            <button className="modal-submit is-secondary" type="button" onClick={onExportAll}>
+              {t("export.title")}
+            </button>
+          </div>
+          <div className="modal-row">
+            <div className="modal-label">{t("settings.blur_codes")}</div>
+            <button
+              className={`modal-toggle-switch ${blurCodes ? "is-on" : ""}`}
+              type="button"
+              role="switch"
+              aria-checked={blurCodes}
+              aria-label={t("settings.blur_codes")}
+              onClick={onToggleBlur}
+            />
+          </div>
+          <div className="modal-row">
+            <div className="modal-label">{t("settings.close_to_tray")}</div>
+            <button
+              className={`modal-toggle-switch ${closeToTray ? "is-on" : ""}`}
+              type="button"
+              role="switch"
+              aria-checked={closeToTray}
+              aria-label={t("settings.close_to_tray")}
+              onClick={onToggleCloseToTray}
+            />
+          </div>
+          <div className="modal-row">
+            <div className="modal-label">{t("settings.pin")}</div>
+            <div className="modal-button-group">
+              <button className="modal-submit is-secondary" type="button" onClick={onSetPin}>
+                {hasPin ? t("actions.change_pin") : t("actions.set_pin")}
+              </button>
+              {hasPin && (
+                <button className="modal-submit is-secondary" type="button" onClick={onRemovePin}>
+                  {t("actions.remove_pin")}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
+        <div className="modal-footer-note">created with &lt;3 by qrewy</div>
       </div>
     </div>
   )

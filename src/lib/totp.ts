@@ -30,6 +30,29 @@ export function base32ToBytes(value: string) {
   return new Uint8Array(out)
 }
 
+export function bytesToBase32(bytes: Uint8Array) {
+  let output = ""
+  let bits = 0
+  let buffer = 0
+
+  for (const byte of bytes) {
+    buffer = (buffer << 8) | byte
+    bits += 8
+    while (bits >= 5) {
+      const index = (buffer >> (bits - 5)) & 0x1f
+      output += base32Alphabet[index]
+      bits -= 5
+    }
+  }
+
+  if (bits > 0) {
+    const index = (buffer << (5 - bits)) & 0x1f
+    output += base32Alphabet[index]
+  }
+
+  return output
+}
+
 async function getHmacKey(secret: string) {
   const normalized = normalizeBase32(secret)
   const cached = keyCache.get(normalized)

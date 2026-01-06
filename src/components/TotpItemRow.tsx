@@ -70,7 +70,10 @@ export function TotpItemRow({
       }}
     >
       <div className="totp-meta">
-        <div className="totp-name">{item.name}</div>
+        <div className="totp-title-row">
+          <div className="totp-name">{item.name}</div>
+          {item.issuer && <div className="totp-issuer">{item.issuer}</div>}
+        </div>
         <div
           className={`totp-expire ${critical ? "is-critical" : ""} ${warning ? "is-warning" : ""}`}
         >

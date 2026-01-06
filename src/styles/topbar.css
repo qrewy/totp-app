@@ -6,6 +6,10 @@
   padding: 0 8px 0 12px;
   user-select: none;
   -webkit-app-region: drag;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #292826;
 }
 
 .topbar-title {
@@ -32,6 +36,11 @@
 
 .topbar-title-button:hover {
   background: #413f3d;
+}
+
+.topbar-title-button:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .topbar-actions {
@@ -74,15 +83,32 @@
   -webkit-mask-image: url("../assets/svg/minimize.svg");
 }
 
+.topbar-icon.lock {
+  width: 22px;
+  height: 22px;
+  background-color: #757373;
+  mask-image: url("../assets/svg/lock.svg");
+  -webkit-mask-image: url("../assets/svg/lock.svg");
+}
+
 .topbar-icon.close {
   mask-image: url("../assets/svg/close.svg");
   -webkit-mask-image: url("../assets/svg/close.svg");
 }
 
 .topbar-button:not(.close):hover .topbar-icon {
-  background-color: #656160;
+   background: #413f3d;
 }
 
 .topbar-button.close:hover .topbar-icon {
   background-color: #c0392b;
+}
+
+.topbar-button:hover .topbar-icon.lock {
+  background-color: #656160;
+}
+
+.topbar-button:disabled {
+  cursor: default;
+  opacity: 0.5;
 }

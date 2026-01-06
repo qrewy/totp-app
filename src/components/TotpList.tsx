@@ -63,7 +63,7 @@ export function TotpList({
   }, [dragId, dragOverId, items])
 
   if (items.length === 0) {
-    return <div className="empty-state">{t("empty.title")}</div>
+    return <div className="empty-state">{t("empty.search")}</div>
   }
 
   return (

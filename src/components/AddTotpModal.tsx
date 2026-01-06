@@ -5,7 +5,7 @@ import { getCurrentWebview } from "@tauri-apps/api/webview"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import { useI18n } from "../lib/i18n"
 import { base32ToBytes, normalizeBase32 } from "../lib/totp"
-import { parseOtpAuth } from "../lib/otpauth"
+import { parseOtpAuthPayload, type OtpScanResult } from "../lib/otpauth"
 import jsQR from "jsqr"
 
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
   onSecretChange: (value: string) => void
   onClose: () => void
   onSubmit: (event: FormEvent) => void
-  onScanResult: (payload: { name: string; secret: string }) => void
+  onScanResult: (payload: OtpScanResult) => void
 }
 
 export function AddTotpModal({
@@ -44,7 +44,7 @@ export function AddTotpModal({
   )
 
   const handleScanSuccess = useCallback(
-    (payload: { name: string; secret: string }) => {
+    (payload: OtpScanResult) => {
       onScanResult(payload)
       setScanError("")
       setIsScanOpen(false)
@@ -83,17 +83,16 @@ export function AddTotpModal({
           return
         }
         const raw = result.data.trim()
-        const parsed = parseOtpAuth(raw)
+        const parsed = parseOtpAuthPayload(raw)
         if (parsed) {
-          const normalized = normalizeBase32(parsed.secret)
-          if (!base32ToBytes(normalized)) {
-            setScanError(t("scan.invalid"))
-            return
+          if (parsed.type === "single") {
+            const normalized = normalizeBase32(parsed.entry.secret)
+            if (!base32ToBytes(normalized)) {
+              setScanError(t("scan.invalid"))
+              return
+            }
           }
-          handleScanSuccess({
-            name: parsed.name,
-            secret: normalized,
-          })
+          handleScanSuccess(parsed)
           return
         }
         const normalized = normalizeBase32(raw)
@@ -102,8 +101,11 @@ export function AddTotpModal({
           return
         }
         handleScanSuccess({
-          name: name.trim() || t("modal.add.title"),
-          secret: normalized,
+          type: "single",
+          entry: {
+            name: name.trim() || t("modal.add.title"),
+            secret: normalized,
+          },
         })
       } catch {
         setScanError(t("scan.invalid"))

@@ -41,11 +41,28 @@
 .totp-meta {
   display: grid;
   gap: 4px;
+  flex: 1;
+  min-width: 0;
 }
 
 .totp-name {
   font-size: 14px;
   font-weight: 600;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.totp-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.totp-issuer {
+  font-size: 12px;
+  color: #c0bbbb;
 }
 
 .totp-expire {
@@ -68,6 +85,18 @@
   letter-spacing: 1px;
   color: #e6e0db;
   font-family: Consolas, "Courier New", monospace;
+  flex-shrink: 0;
+  margin-left: 16px;
+  transition: filter 160ms ease;
+}
+
+.app.blur-codes .totp-code {
+  filter: blur(4.5px);
+}
+
+.app.blur-codes .totp-code:hover,
+.app.blur-codes .totp-code:focus {
+  filter: blur(0);
 }
 
 @keyframes blink {
