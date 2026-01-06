@@ -78,6 +78,13 @@
   color: #9a9595;
 }
 
+.modal-footer-version {
+  margin-top: 4px;
+  font-size: 11px;
+  text-align: center;
+  color: #6f6a67;
+}
+
 .export-modal {
   width: min(520px, 92vw);
 }
@@ -339,11 +346,18 @@
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+  font-family: inherit;
   transition: transform 160ms ease, background-color 160ms ease;
 }
 
 .modal-submit.is-full {
   width: 100%;
+}
+
+.modal-submit.is-large {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 13px;
 }
 
 .modal-submit.is-secondary {
@@ -357,6 +371,11 @@
 
 .modal-submit:hover {
   background: #2c2a29;
+}
+
+.modal-submit:active {
+  background: #24211f;
+  transform: translateY(1px);
 }
 
 
@@ -373,6 +392,19 @@
 .scan-panel {
   display: grid;
   gap: 8px;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 220ms ease, opacity 200ms ease, transform 200ms ease;
+}
+
+.scan-panel.is-open {
+  max-height: 260px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .scan-drop {
@@ -442,6 +474,100 @@
   border-color: #4a4541;
 }
 
+.modal-dropdown {
+  position: relative;
+  min-width: 140px;
+}
+
+.modal-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #35312e;
+  background: #1f1d1b;
+  color: #e6e6e6;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.modal-dropdown-trigger:hover {
+  background: #2f2c2a;
+  border-color: #3c3835;
+}
+
+.modal-dropdown-trigger.is-open {
+  background: #2f2c2a;
+  border-color: #4a4541;
+}
+
+.modal-dropdown-value {
+  white-space: nowrap;
+}
+
+.modal-dropdown-chevron {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #9a9595;
+}
+
+.modal-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 140px;
+  background: #1f1d1b;
+  border: 1px solid #2b2826;
+  border-radius: 10px;
+  padding: 4px;
+  display: grid;
+  gap: 2px;
+  z-index: 5;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.modal-dropdown-menu.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.modal-dropdown-item {
+  border: none;
+  background: transparent;
+  color: #e6e6e6;
+  font-size: 12px;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.modal-dropdown-item:hover {
+  background: #2f2c2a;
+}
+
+.modal-dropdown-item.is-active {
+  background: #3a3836;
+}
+
+.modal-dropdown-item:focus-visible,
+.modal-dropdown-trigger:focus-visible {
+  outline: 2px solid #5b5754;
+  outline-offset: 2px;
+}
+
 .modal-row {
   display: flex;
   align-items: center;
@@ -457,9 +583,89 @@
   color: #9a9595;
 }
 
+.modal-row-button {
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.modal-row-button.is-center {
+  justify-content: center;
+}
+
+.modal-row-button:hover {
+  background: #2f2c2a;
+  border-color: #3c3835;
+}
+
+.modal-row-button:active {
+  transform: translateY(1px);
+}
+
+.modal-row-button:focus-visible {
+  outline: 2px solid #5b5754;
+  outline-offset: 2px;
+}
+
+.modal-row-button.is-danger {
+  background: #2a1d1b;
+  border-color: #3a2321;
+}
+
+.modal-row-button.is-danger:hover {
+  background: #3a2321;
+  border-color: #4a2a27;
+}
+
+.modal-row-action {
+  color: #e6e6e6;
+  font-weight: 600;
+}
+
+.modal-row-action.is-normal {
+  font-weight: 400;
+}
+
+.modal-row-button.is-danger .modal-row-action {
+  color: #f06d62;
+}
+
 .modal-button-group {
   display: flex;
   gap: 6px;
+}
+
+.modal-button-group.is-stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.modal-row-actions {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.modal-pin-button {
+  flex: 1 1 0;
+  min-height: 40px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.modal-submit.is-danger-outline {
+  background: #3a2321;
+  border: 1px solid #3a2321;
+  color: #f06d62;
+}
+
+.modal-submit.is-danger-outline:hover {
+  background: #4a2a27;
+  color: #f57a70;
 }
 
 .modal-toggle-switch {
@@ -516,45 +722,47 @@
   background: transparent;
   border: none;
   border-radius: 0;
-  padding: 24px 20px;
+  padding: 32px 24px;
   display: grid;
   gap: 12px;
   text-align: center;
   align-content: center;
   justify-items: center;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 180ms ease, transform 180ms ease;
+  transform: translateY(8px);
+  transition: opacity 200ms ease, transform 200ms ease;
 }
 
 .pin-title {
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.4px;
 }
 
 .pin-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   color: #9a9595;
   max-width: 260px;
+  line-height: 1.4;
 }
 
 .pin-input {
-  background: #262320;
-  border: 1px solid #35312e;
-  border-radius: 12px;
+  background: #1f1d1b;
+  border: 1px solid #2b2826;
+  border-radius: 10px;
   padding: 12px 14px;
   color: #e6e6e6;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   outline: none;
-  width: min(320px, 80vw);
+  width: min(280px, 80vw);
   transition: border-color 160ms ease;
   -webkit-text-security: disc;
 }
 
 .pin-input:focus {
-  border-color: #5b5754;
+  border-color: #413f3d;
+  background: #1f1d1b;
 }
 
 .pin-input.is-error {
@@ -574,13 +782,28 @@
 .pin-actions {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 8px;
+  width: min(280px, 80vw);
+  align-items: stretch;
 }
 
 .pin-actions .modal-submit {
-  padding: 10px 20px;
+  flex: 1 1 0;
+  padding: 12px 16px;
+  min-height: 44px;
   font-size: 13px;
+  letter-spacing: 0.2px;
+  background: #24211f;
+  border: 1px solid #2b2826;
+}
+
+.pin-actions .modal-submit:only-child {
+  flex: 0 0 100%;
+}
+
+.pin-actions .modal-submit:hover {
+  background: #2f2c2a;
 }
 
 .pin-overlay.is-open {

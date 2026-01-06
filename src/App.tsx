@@ -1,5 +1,6 @@
 import type { FormEvent } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { getVersion } from "@tauri-apps/api/app"
 import { invoke } from "@tauri-apps/api/core"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import { AddButton } from "./components/AddButton"
@@ -261,6 +262,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("")
   const [blurCodes, setBlurCodes] = useState(true)
   const [closeToTray, setCloseToTray] = useState(true)
+  const [appVersion, setAppVersion] = useState("")
   const [hasPin, setHasPin] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
   const [isPinSetupOpen, setIsPinSetupOpen] = useState(false)
@@ -334,6 +336,12 @@ export default function App() {
     } else {
       setHasPin(false)
     }
+  }, [])
+
+  useEffect(() => {
+    getVersion()
+      .then((version) => setAppVersion(version))
+      .catch(() => null)
   }, [])
 
   useEffect(() => {
@@ -1341,6 +1349,7 @@ export default function App() {
 
       <main className="content">
         <div className="totp-search">
+          <span className="totp-search-icon" aria-hidden="true" />
           <input
             className="totp-search-input"
             placeholder={t("search.placeholder")}
@@ -1353,6 +1362,7 @@ export default function App() {
           codes={codes}
           nowSec={nowSec}
           defaultPeriod={PERIOD_SECONDS}
+          searchQuery={searchQuery}
           onCopy={handleCopy}
           onContextMenu={handleContextMenu}
           dragId={dragId}
@@ -1390,6 +1400,7 @@ export default function App() {
         onToggleBlur={handleBlurToggle}
         closeToTray={closeToTray}
         onToggleCloseToTray={handleCloseToTrayToggle}
+        appVersion={appVersion}
       />
 
       <ExportQrModal

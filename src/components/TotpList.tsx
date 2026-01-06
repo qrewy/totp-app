@@ -9,6 +9,7 @@ type Props = {
   codes: Record<string, string>
   nowSec: number
   defaultPeriod: number
+  searchQuery: string
   onCopy: (code: string) => void
   onContextMenu: (event: React.MouseEvent, item: TotpItem) => void
   dragId: string | null
@@ -23,6 +24,7 @@ export function TotpList({
   codes,
   nowSec,
   defaultPeriod,
+  searchQuery,
   onCopy,
   onContextMenu,
   dragId,
@@ -33,6 +35,7 @@ export function TotpList({
 }: Props) {
   const { t } = useI18n()
   const [itemSpacing, setItemSpacing] = useState(0)
+  const normalizedQuery = useMemo(() => searchQuery.trim().toLowerCase(), [searchQuery])
 
   useLayoutEffect(() => {
     const listEl = listRef.current
@@ -94,6 +97,7 @@ export function TotpList({
             remaining={remaining}
             warning={warning}
             critical={critical}
+            highlightQuery={normalizedQuery}
             onCopy={onCopy}
             onContextMenu={onContextMenu}
             dragId={dragId}

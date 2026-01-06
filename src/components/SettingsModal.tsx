@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { useI18n } from "../lib/i18n"
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
   onToggleBlur: () => void
   closeToTray: boolean
   onToggleCloseToTray: () => void
+  appVersion: string
 }
 
 export function SettingsModal({
@@ -27,8 +29,42 @@ export function SettingsModal({
   onToggleBlur,
   closeToTray,
   onToggleCloseToTray,
+  appVersion,
 }: Props) {
   const { locale, setLocale, t } = useI18n()
+  const [isLangOpen, setIsLangOpen] = useState(false)
+  const langRef = useRef<HTMLDivElement | null>(null)
+  const languageOptions = [
+    { value: "en" as const, label: t("settings.language.en") },
+    { value: "ru" as const, label: t("settings.language.ru") },
+  ]
+  const selectedLanguage =
+    languageOptions.find((option) => option.value === locale) ?? languageOptions[0]
+
+  useEffect(() => {
+    if (!isLangOpen) {
+      return
+    }
+    const handleClick = (event: MouseEvent) => {
+      if (!langRef.current) {
+        return
+      }
+      if (!langRef.current.contains(event.target as Node)) {
+        setIsLangOpen(false)
+      }
+    }
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsLangOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    document.addEventListener("keydown", handleKey)
+    return () => {
+      document.removeEventListener("mousedown", handleClick)
+      document.removeEventListener("keydown", handleKey)
+    }
+  }, [isLangOpen])
 
   if (!isOpen) {
     return null
@@ -57,28 +93,41 @@ export function SettingsModal({
         <div className="modal-body">
           <div className="modal-row">
             <div className="modal-label">{t("settings.language")}</div>
-            <div className="modal-toggle-group">
+            <div className="modal-dropdown" ref={langRef}>
               <button
                 type="button"
-                className={`modal-toggle ${locale === "en" ? "is-active" : ""}`}
-                onClick={() => setLocale("en")}
+                className={`modal-dropdown-trigger ${isLangOpen ? "is-open" : ""}`}
+                onClick={() => setIsLangOpen((value) => !value)}
+                aria-haspopup="listbox"
+                aria-expanded={isLangOpen}
               >
-                {t("settings.language.en")}
+                <span className="modal-dropdown-value">{selectedLanguage.label}</span>
+                <span className="modal-dropdown-chevron" aria-hidden="true" />
               </button>
-              <button
-                type="button"
-                className={`modal-toggle ${locale === "ru" ? "is-active" : ""}`}
-                onClick={() => setLocale("ru")}
+              <div
+                className={`modal-dropdown-menu ${isLangOpen ? "is-open" : ""}`}
+                role="listbox"
+                aria-hidden={!isLangOpen}
               >
-                {t("settings.language.ru")}
-              </button>
+                {languageOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`modal-dropdown-item ${
+                      locale === option.value ? "is-active" : ""
+                    }`}
+                    role="option"
+                    aria-selected={locale === option.value}
+                    onClick={() => {
+                      setLocale(option.value)
+                      setIsLangOpen(false)
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="modal-row">
-            <div className="modal-label">{t("settings.export")}</div>
-            <button className="modal-submit is-secondary" type="button" onClick={onExportAll}>
-              {t("export.title")}
-            </button>
           </div>
           <div className="modal-row">
             <div className="modal-label">{t("settings.blur_codes")}</div>
@@ -102,21 +151,42 @@ export function SettingsModal({
               onClick={onToggleCloseToTray}
             />
           </div>
-          <div className="modal-row">
-            <div className="modal-label">{t("settings.pin")}</div>
-            <div className="modal-button-group">
-              <button className="modal-submit is-secondary" type="button" onClick={onSetPin}>
-                {hasPin ? t("actions.change_pin") : t("actions.set_pin")}
+          <button
+            className="modal-row modal-row-button is-center"
+            type="button"
+            onClick={onExportAll}
+          >
+            <span className="modal-row-action is-normal">{t("settings.export")}</span>
+          </button>
+          {hasPin ? (
+            <div className="modal-row-actions">
+              <button
+                className="modal-submit is-secondary modal-pin-button"
+                type="button"
+                onClick={onSetPin}
+              >
+                {t("settings.export")}
               </button>
-              {hasPin && (
-                <button className="modal-submit is-secondary" type="button" onClick={onRemovePin}>
-                  {t("actions.remove_pin")}
-                </button>
-              )}
+              <button
+                className="modal-submit is-secondary is-danger-outline modal-pin-button"
+                type="button"
+                onClick={onRemovePin}
+              >
+                {t("actions.remove_pin")}
+              </button>
             </div>
-          </div>
+          ) : (
+            <button
+              className="modal-submit is-secondary modal-pin-button"
+              type="button"
+              onClick={onSetPin}
+            >
+              {t("actions.set_pin")}
+            </button>
+          )}
         </div>
         <div className="modal-footer-note">created with &lt;3 by qrewy</div>
+        {appVersion && <div className="modal-footer-version">v{appVersion}</div>}
       </div>
     </div>
   )

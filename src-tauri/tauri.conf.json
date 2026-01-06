@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "totp-app",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "identifier": "com.ttop.qrewy",
   "build": {
     "frontendDist": "../dist",
@@ -9,11 +9,20 @@
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
+  "tauri": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/qrewy/totp-app/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEREOUJBNzk4MEJGNDUyQzIKUldUQ1V2UUxtS2ViM2Q2bDVlajJEdDlUQUx0NkFMQkNiMCtGVmtmejhUZEJkMDBqeE1UNGE5RE4K"
+    }
+  },
   "app": {
     "windows": [
         {
         "label": "main",
-        "title": "totp-app",
+        "title": "totp app",
         "width": 550,
         "height": 850,
         "resizable": false,

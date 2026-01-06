@@ -4,21 +4,42 @@
 
 .totp-search {
   margin-bottom: 12px;
+  position: relative;
 }
 
 .totp-search-input {
   width: 100%;
-  background: #1F1D1B;
+  background: #1f1d1b;
   border: 1px solid #2b2826;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 10px 12px 10px 34px;
   color: #e6e6e6;
   font-size: 13px;
   outline: none;
+  transition: border-color 240ms ease;
 }
 
 .totp-search-input:focus {
   border-color: #413f3d;
+}
+
+.totp-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 48%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  background-color: #7e7a77;
+  mask-image: url("../assets/svg/search.svg");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-image: url("../assets/svg/search.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  pointer-events: none;
 }
 
 .section-title {

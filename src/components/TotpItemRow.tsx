@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { TotpItem } from "../types"
 import "../styles/totp-item.css"
 
@@ -8,6 +8,7 @@ type Props = {
   remaining: number
   warning: boolean
   critical: boolean
+  highlightQuery: string
   onCopy: (code: string) => void
   onContextMenu: (event: React.MouseEvent, item: TotpItem) => void
   dragId: string | null
@@ -24,6 +25,7 @@ export function TotpItemRow({
   remaining,
   warning,
   critical,
+  highlightQuery,
   onCopy,
   onContextMenu,
   dragId,
@@ -36,6 +38,7 @@ export function TotpItemRow({
   const didDragRef = useRef(false)
   const isActiveDrag = dragId === item.id
   const isDropTarget = dragOverId === item.id && dragId !== item.id
+  const [isNew, setIsNew] = useState(true)
 
   useEffect(() => {
     if (isDragging && isActiveDrag) {
@@ -43,9 +46,36 @@ export function TotpItemRow({
     }
   }, [isActiveDrag, isDragging])
 
+  useEffect(() => {
+    setIsNew(true)
+    const timer = setTimeout(() => setIsNew(false), 800)
+    return () => clearTimeout(timer)
+  }, [item.id])
+
+  const highlightText = (text: string) => {
+    if (!highlightQuery) {
+      return text
+    }
+    const lower = text.toLowerCase()
+    const index = lower.indexOf(highlightQuery)
+    if (index === -1) {
+      return text
+    }
+    const before = text.slice(0, index)
+    const match = text.slice(index, index + highlightQuery.length)
+    const after = text.slice(index + highlightQuery.length)
+    return (
+      <>
+        {before}
+        <span className="totp-highlight">{match}</span>
+        {after}
+      </>
+    )
+  }
+
   return (
     <div
-      className={`totp-item ${isActiveDrag ? "is-dragging" : ""} ${isDropTarget ? "is-drop-target" : ""} ${isPlaceholder ? "is-placeholder" : ""}`}
+      className={`totp-item ${isNew ? "is-new" : ""} ${isActiveDrag ? "is-dragging" : ""} ${isDropTarget ? "is-drop-target" : ""} ${isPlaceholder ? "is-placeholder" : ""}`}
       data-totp-id={item.id}
       style={shiftY ? { transform: `translateY(${shiftY}px)` } : undefined}
       onClick={() => {
@@ -71,8 +101,8 @@ export function TotpItemRow({
     >
       <div className="totp-meta">
         <div className="totp-title-row">
-          <div className="totp-name">{item.name}</div>
-          {item.issuer && <div className="totp-issuer">{item.issuer}</div>}
+          <div className="totp-name">{highlightText(item.name)}</div>
+          {item.issuer && <div className="totp-issuer">{highlightText(item.issuer)}</div>}
         </div>
         <div
           className={`totp-expire ${critical ? "is-critical" : ""} ${warning ? "is-warning" : ""}`}

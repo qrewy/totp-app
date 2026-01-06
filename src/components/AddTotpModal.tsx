@@ -269,67 +269,68 @@ export function AddTotpModal({
               {t("actions.scan_qr")}
             </button>
           </div>
-          {isScanOpen && (
-            <div className="scan-panel">
-              <div
-                className={`scan-drop ${isDragOver ? "is-dragover" : ""}`}
-                onDragEnter={(event) => {
-                  event.preventDefault()
-                  setIsDragOver(true)
-                }}
-                onDragOver={(event) => {
-                  event.preventDefault()
-                  event.dataTransfer.dropEffect = "copy"
-                  setIsDragOver(true)
-                }}
-                onDragLeave={(event) => {
-                  const nextTarget = event.relatedTarget as Node | null
-                  if (nextTarget && event.currentTarget.contains(nextTarget)) {
+          <div
+            className={`scan-panel ${isScanOpen ? "is-open" : ""}`}
+            aria-hidden={!isScanOpen}
+          >
+            <div
+              className={`scan-drop ${isDragOver ? "is-dragover" : ""}`}
+              onDragEnter={(event) => {
+                event.preventDefault()
+                setIsDragOver(true)
+              }}
+              onDragOver={(event) => {
+                event.preventDefault()
+                event.dataTransfer.dropEffect = "copy"
+                setIsDragOver(true)
+              }}
+              onDragLeave={(event) => {
+                const nextTarget = event.relatedTarget as Node | null
+                if (nextTarget && event.currentTarget.contains(nextTarget)) {
+                  return
+                }
+                setIsDragOver(false)
+              }}
+              onDrop={(event) => {
+                event.preventDefault()
+                setIsDragOver(false)
+                const items = event.dataTransfer.items
+                if (items && items.length > 0) {
+                  const entry = Array.from(items).find((item) => item.kind === "file")
+                  const file = entry?.getAsFile()
+                  if (file) {
+                    void decodeQrFromBlob(file)
                     return
                   }
-                  setIsDragOver(false)
-                }}
-                onDrop={(event) => {
-                  event.preventDefault()
-                  setIsDragOver(false)
-                  const items = event.dataTransfer.items
-                  if (items && items.length > 0) {
-                    const entry = Array.from(items).find((item) => item.kind === "file")
-                    const file = entry?.getAsFile()
-                    if (file) {
-                      void decodeQrFromBlob(file)
-                      return
-                    }
-                  }
-                  const file = event.dataTransfer.files[0]
-                  if (file) {
-                    void decodeQrFromBlob(file)
-                  } else {
-                    setScanError(t("scan.invalid"))
-                  }
-                }}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <div className="scan-title">{t("actions.scan_qr")}</div>
-                <div className="scan-hint">{scanHint}</div>
-                {isProcessing && <div className="scan-status">{t("scan.processing")}</div>}
-              </div>
-              <input
-                ref={fileInputRef}
-                className="scan-file-input"
-                type="file"
-                accept="image/*"
-                onChange={(event) => {
-                  const file = event.target.files?.[0]
-                  if (file) {
-                    void decodeQrFromBlob(file)
-                  }
-                  event.currentTarget.value = ""
-                }}
-              />
-              {scanError && <div className="scan-error">{scanError}</div>}
+                }
+                const file = event.dataTransfer.files[0]
+                if (file) {
+                  void decodeQrFromBlob(file)
+                } else {
+                  setScanError(t("scan.invalid"))
+                }
+              }}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <div className="scan-title">{t("actions.scan_qr")}</div>
+              <div className="scan-hint">{scanHint}</div>
+              {isProcessing && <div className="scan-status">{t("scan.processing")}</div>}
             </div>
-          )}
+            <input
+              ref={fileInputRef}
+              className="scan-file-input"
+              type="file"
+              accept="image/*"
+              onChange={(event) => {
+                const file = event.target.files?.[0]
+                if (file) {
+                  void decodeQrFromBlob(file)
+                }
+                event.currentTarget.value = ""
+              }}
+            />
+            {scanError && <div className="scan-error">{scanError}</div>}
+          </div>
         </form>
       </div>
     </div>
